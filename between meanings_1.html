@@ -1,0 +1,1548 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Between Meanings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#fcfaf4;
+      --surface:#fffdf8;
+      --surface-2:#faf7f1;
+      --text:#171717;
+      --muted:#5d5952;
+      --line:#171717;
+
+      --accent1:#f1d98b;
+      --accent2:#d6ead8;
+      --accent3:#dbe8f7;
+      --accent4:#f5d4cb;
+      --accent5:#e6def6;
+
+      --max:1240px;
+      --sans:"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --serif:"Libre Baskerville", Georgia, serif;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:var(--sans);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+
+    button,input,textarea,select{
+      font:inherit;
+    }
+
+    .container{
+      width:min(var(--max), calc(100% - 32px));
+      margin:0 auto;
+    }
+
+    .site-shell{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .site-header{
+      position:sticky;
+      top:0;
+      z-index:30;
+      background:rgba(252,250,244,.88);
+      backdrop-filter:blur(12px);
+      border-bottom:1.5px solid rgba(23,23,23,.12);
+    }
+
+    .header-inner{
+      padding:12px 0 8px;
+    }
+
+    .header-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:inline-block;
+      text-decoration:none;
+      color:var(--text);
+      font-family:var(--serif);
+      font-size:1.35rem;
+      line-height:1.1;
+      letter-spacing:-0.02em;
+    }
+
+    .brand-sub{
+      margin:6px 0 0;
+      max-width:640px;
+      color:var(--muted);
+      font-size:.82rem;
+      line-height:1.55;
+    }
+
+    .header-actions{
+      display:flex;
+      align-items:flex-end;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .topic-select-wrap{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .topic-label{
+      font-size:.68rem;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    .topic-select-wrap select{
+      min-width:240px;
+      height:38px;
+      padding:0 12px;
+      border:1.5px solid rgba(23,23,23,.15);
+      border-radius:10px;
+      background:var(--surface);
+      color:var(--text);
+      outline:none;
+    }
+
+    .nav-row{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      padding:10px 0 4px;
+    }
+
+    .nav-link{
+      height:34px;
+      padding:0 12px;
+      border:1.5px solid rgba(23,23,23,.14);
+      background:var(--surface);
+      color:var(--muted);
+      border-radius:999px;
+      cursor:pointer;
+      transition:.18s ease;
+      font-size:.84rem;
+    }
+
+    .nav-link:hover{
+      color:var(--text);
+      border-color:rgba(23,23,23,.3);
+      transform:translateY(-1px);
+    }
+
+    .nav-link.active{
+      color:var(--text);
+      border-color:var(--line);
+      background:var(--accent5);
+    }
+
+    .btn{
+      height:38px;
+      padding:0 14px;
+      border-radius:10px;
+      cursor:pointer;
+      transition:.18s ease;
+      border:1.5px solid var(--line);
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .btn-dark{
+      background:var(--text);
+      color:#fff;
+    }
+
+    .btn-soft{
+      background:var(--accent3);
+      color:var(--text);
+    }
+
+    .btn-outline{
+      background:var(--surface);
+      color:var(--text);
+      border-color:rgba(23,23,23,.2);
+    }
+
+    .btn-outline:hover{
+      border-color:var(--text);
+    }
+
+    .site-main{
+      flex:1;
+      padding:22px 0 34px;
+    }
+
+    .screen{
+      display:none;
+      background:var(--surface);
+      border:1.5px solid rgba(23,23,23,.14);
+      border-radius:22px;
+      padding:30px;
+      min-height:72vh;
+      box-shadow:0 1px 0 rgba(0,0,0,.02);
+    }
+
+    .screen.active{
+      display:block;
+      animation:fadeScreen .35s ease;
+    }
+
+    @keyframes fadeScreen{
+      from{opacity:0; transform:translateY(6px);}
+      to{opacity:1; transform:translateY(0);}
+    }
+
+    .hero-screen{
+      background:
+        radial-gradient(circle at 15% 20%, rgba(241,217,139,.30), transparent 28%),
+        radial-gradient(circle at 88% 26%, rgba(214,234,216,.34), transparent 24%),
+        radial-gradient(circle at 68% 80%, rgba(230,222,246,.28), transparent 22%),
+        linear-gradient(180deg, #fffdf8 0%, #faf6ef 100%);
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:24px;
+      align-items:start;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      min-height:28px;
+      padding:0 10px;
+      border:1.5px solid rgba(23,23,23,.12);
+      border-radius:999px;
+      background:var(--accent2);
+      color:var(--text);
+      font-size:.72rem;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .hero-title{
+      margin:18px 0 0;
+      font-size:clamp(2.3rem, 6vw, 5.1rem);
+      line-height:.98;
+      letter-spacing:-0.055em;
+      max-width:11ch;
+      font-weight:800;
+    }
+
+    .hero-title .wobble{
+      display:inline-block;
+      animation:wobbleWord 4.4s ease-in-out infinite;
+      transform-origin:center;
+    }
+
+    .hero-title .wobble:nth-child(2){ animation-delay:.12s; }
+    .hero-title .wobble:nth-child(3){ animation-delay:.24s; }
+    .hero-title .wobble:nth-child(4){ animation-delay:.36s; }
+    .hero-title .wobble:nth-child(5){ animation-delay:.48s; }
+
+    @keyframes wobbleWord{
+      0%, 100%{ transform:translateY(0) rotate(0deg); }
+      10%{ transform:translateY(-1px) rotate(-0.25deg); }
+      20%{ transform:translateY(0.5px) rotate(0.25deg); }
+      30%{ transform:translateY(-0.75px) rotate(-0.2deg); }
+      40%{ transform:translateY(0) rotate(0deg); }
+    }
+
+    .hero-text{
+      max-width:60ch;
+      margin:18px 0 0;
+      color:var(--muted);
+      font-size:.98rem;
+      line-height:1.78;
+    }
+
+    .hero-panel{
+      border:1.5px solid rgba(23,23,23,.12);
+      border-radius:18px;
+      padding:20px;
+      background:rgba(255,253,248,.84);
+      animation:floatPanel 5.5s ease-in-out infinite;
+    }
+
+    @keyframes floatPanel{
+      0%,100%{ transform:translateY(0); }
+      50%{ transform:translateY(-4px); }
+    }
+
+    .hero-panel-label{
+      font-size:.72rem;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+    }
+
+    .hero-panel-value{
+      margin-top:14px;
+      font-size:1.55rem;
+      font-weight:700;
+      line-height:1.15;
+      letter-spacing:-0.03em;
+    }
+
+    .hero-panel-text{
+      margin:14px 0 0;
+      color:var(--muted);
+      line-height:1.72;
+      font-size:.95rem;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .section-title{
+      margin:14px 0 0;
+      font-size:1.95rem;
+      line-height:1.05;
+      letter-spacing:-0.04em;
+    }
+
+    .theme-title{
+      max-width:14ch;
+    }
+
+    .section-text{
+      margin:14px 0 0;
+      max-width:72ch;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:.97rem;
+    }
+
+    .info-grid,
+    .question-grid,
+    .form-grid{
+      display:grid;
+      gap:16px;
+      margin-top:24px;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+    }
+
+    .info-card,
+    .question-card,
+    .panel,
+    .response-card,
+    .thread-card,
+    .proverb-card{
+      border:1.5px solid rgba(23,23,23,.12);
+      border-radius:18px;
+      background:var(--surface);
+      transition:.2s ease;
+    }
+
+    .info-card:hover,
+    .question-card:hover,
+    .proverb-card:hover,
+    .response-card:hover,
+    .thread-card:hover{
+      transform:translateY(-2px);
+      border-color:rgba(23,23,23,.22);
+    }
+
+    .info-card{
+      padding:18px;
+      background:linear-gradient(180deg, #fffdf8 0%, #fcf8f0 100%);
+    }
+
+    .info-title,
+    .panel-title{
+      margin:0;
+      font-size:.78rem;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    .info-text{
+      margin:14px 0 0;
+      line-height:1.75;
+      color:var(--text);
+      font-size:.96rem;
+    }
+
+    .question-card{
+      padding:18px;
+      font-size:.98rem;
+      line-height:1.68;
+      background:linear-gradient(180deg, #fffdf8 0%, #f9f5ee 100%);
+    }
+
+    .count-chip{
+      display:inline-flex;
+      align-items:center;
+      min-height:34px;
+      padding:0 12px;
+      border:1.5px solid rgba(23,23,23,.12);
+      border-radius:999px;
+      color:var(--text);
+      background:var(--accent1);
+      font-size:.84rem;
+      font-weight:600;
+    }
+
+    /* editorial proverb cards */
+    .proverb-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:28px;
+      margin-top:40px;
+    }
+
+    .proverb-card{
+      padding:28px 26px;
+      border:1.5px solid rgba(23,23,23,.14);
+      border-radius:20px;
+      background:linear-gradient(180deg, #fffdf8 0%, #faf6ef 100%);
+      position:relative;
+    }
+
+    .proverb-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 8px 30px rgba(0,0,0,.06);
+    }
+
+    .lang-chip{
+      display:inline-flex;
+      align-items:center;
+      min-height:28px;
+      padding:0 10px;
+      border:1.5px solid rgba(23,23,23,.12);
+      border-radius:999px;
+      color:var(--text);
+      font-size:.7rem;
+      font-weight:700;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      background:var(--accent5);
+      margin-bottom:14px;
+    }
+
+    .proverb-grid .proverb-card:nth-child(5n+1) .lang-chip{ background:var(--accent2); }
+    .proverb-grid .proverb-card:nth-child(5n+2) .lang-chip{ background:var(--accent3); }
+    .proverb-grid .proverb-card:nth-child(5n+3) .lang-chip{ background:var(--accent4); }
+    .proverb-grid .proverb-card:nth-child(5n+4) .lang-chip{ background:var(--accent5); }
+    .proverb-grid .proverb-card:nth-child(5n+5) .lang-chip{ background:var(--accent1); }
+
+    .proverb-text{
+      font-family:var(--serif);
+      font-size:1.6rem;
+      line-height:1.35;
+      letter-spacing:-0.02em;
+      margin-bottom:16px;
+    }
+
+    .proverb-meaning{
+      font-size:.95rem;
+      color:var(--muted);
+      line-height:1.7;
+      border-top:1px solid rgba(0,0,0,.08);
+      padding-top:14px;
+    }
+
+    .proverb-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+
+    .panel{
+      padding:20px;
+      background:linear-gradient(180deg, #fffdf8 0%, #fbf7ef 100%);
+    }
+
+    .field{
+      margin-top:16px;
+    }
+
+    .field label{
+      display:block;
+      margin-bottom:8px;
+      font-size:.8rem;
+      font-weight:600;
+      color:var(--muted);
+    }
+
+    input,
+    textarea{
+      width:100%;
+      border:1.5px solid rgba(23,23,23,.14);
+      border-radius:12px;
+      background:#fffdfa;
+      padding:13px 14px;
+      color:var(--text);
+      outline:none;
+      transition:.18s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus{
+      border-color:rgba(23,23,23,.35);
+      box-shadow:0 0 0 3px rgba(219,232,247,.45);
+    }
+
+    textarea{
+      min-height:130px;
+      resize:vertical;
+      line-height:1.65;
+    }
+
+    .button-row{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+
+    .status{
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
+    .response-feed,
+    .thread-list{
+      display:grid;
+      gap:16px;
+      margin-top:24px;
+    }
+
+    .response-card{
+      padding:18px;
+      background:linear-gradient(180deg, #fffdf8 0%, #faf6ef 100%);
+    }
+
+    .response-top,
+    .thread-top,
+    .reply-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+
+    .response-meta,
+    .reply-meta{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .response-user,
+    .reply-user{
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .culture-badge{
+      display:inline-flex;
+      align-items:center;
+      min-height:26px;
+      padding:0 10px;
+      border:1.5px solid rgba(23,23,23,.12);
+      border-radius:999px;
+      font-size:.75rem;
+      color:var(--text);
+      background:var(--accent3);
+    }
+
+    .response-time,
+    .reply-time{
+      font-size:.8rem;
+      color:var(--muted);
+    }
+
+    .response-body,
+    .reply-body{
+      line-height:1.75;
+      color:var(--text);
+      white-space:pre-wrap;
+      font-size:.95rem;
+    }
+
+    .thread-card{
+      padding:20px;
+      background:linear-gradient(180deg, #fffdf8 0%, #faf7f0 100%);
+    }
+
+    .thread-title{
+      margin:10px 0 0;
+      font-size:1.34rem;
+      line-height:1.25;
+      letter-spacing:-0.03em;
+    }
+
+    .thread-sub{
+      margin:14px 0 0;
+      color:var(--muted);
+      line-height:1.72;
+      font-size:.95rem;
+    }
+
+    .reply-list{
+      display:grid;
+      gap:12px;
+      margin-top:20px;
+    }
+
+    .reply-card{
+      border:1.5px solid rgba(23,23,23,.10);
+      border-radius:14px;
+      padding:14px;
+      background:var(--surface-2);
+    }
+
+    .empty-state{
+      border:1.5px dashed rgba(23,23,23,.2);
+      border-radius:14px;
+      padding:18px;
+      color:var(--muted);
+      background:linear-gradient(180deg, #fffdf8 0%, #faf7f1 100%);
+    }
+
+    .site-footer{
+      border-top:1.5px solid rgba(23,23,23,.12);
+      background:rgba(255,253,248,.85);
+      backdrop-filter:blur(10px);
+    }
+
+    .footer-inner{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      flex-wrap:wrap;
+      padding:16px 0;
+    }
+
+    .progress-text{
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
+    .footer-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    @media (max-width: 980px){
+      .hero-grid,
+      .info-grid,
+      .question-grid,
+      .form-grid,
+      .proverb-grid{
+        grid-template-columns:1fr;
+      }
+
+      .hero-title,
+      .theme-title{
+        max-width:none;
+      }
+    }
+
+    @media (max-width: 780px){
+      .container{
+        width:min(var(--max), calc(100% - 22px));
+      }
+
+      .screen{
+        padding:22px;
+        min-height:auto;
+      }
+
+      .topic-select-wrap select{
+        min-width:200px;
+      }
+
+      .header-actions{
+        width:100%;
+      }
+
+      .nav-row{
+        overflow-x:auto;
+        flex-wrap:nowrap;
+        padding-bottom:8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="header-top">
+          <div class="brand-block">
+            <a href="#" class="brand">Between Meanings</a>
+            <p class="brand-sub">
+              A comparative platform for proverbs, language, and interpretation across cultures.
+            </p>
+          </div>
+
+          <div class="header-actions">
+            <label class="topic-select-wrap" for="topicSelect">
+              <span class="topic-label">Topic</span>
+              <select id="topicSelect"></select>
+            </label>
+            <button id="nextTopicBtn" class="btn btn-soft" type="button">Next Topic</button>
+          </div>
+        </div>
+
+        <div class="nav-row">
+          <button class="nav-link active" data-screen-target="0" type="button">Overview</button>
+          <button class="nav-link" data-screen-target="1" type="button">Theme</button>
+          <button class="nav-link" data-screen-target="2" type="button">Questions</button>
+          <button class="nav-link" data-screen-target="3" type="button">Proverbs</button>
+          <button class="nav-link" data-screen-target="4" type="button">Contribute</button>
+          <button class="nav-link" data-screen-target="5" type="button">Responses</button>
+          <button class="nav-link" data-screen-target="6" type="button">Threads</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="site-main">
+      <div class="container">
+        <section class="screen active hero-screen" data-screen="0">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <div class="eyebrow">Language Research Platform</div>
+              <h1 class="hero-title">
+                <span class="wobble">Meaning</span>
+                <span class="wobble">shifts</span>
+                <span class="wobble">when</span>
+                <span class="wobble">language</span>
+                <span class="wobble">changes.</span>
+              </h1>
+              <p class="hero-text">
+                Between Meanings compares proverbs from different cultures to examine how similar ideas
+                are expressed through distinct images, tones, and cultural contexts.
+              </p>
+            </div>
+
+            <div class="hero-panel">
+              <div class="hero-panel-label">Focus</div>
+              <div class="hero-panel-value">Incompleteness between languages</div>
+              <p class="hero-panel-text">
+                This project looks at how meaning is never fully stable, and how interpretation emerges
+                through comparison, context, and response.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="1">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">Current Theme</div>
+              <h2 class="section-title theme-title" id="themeTitle"></h2>
+              <p class="section-text" id="themeSub"></p>
+            </div>
+          </div>
+
+          <div class="info-grid">
+            <article class="info-card">
+              <h3 class="info-title">Project Intent</h3>
+              <p class="info-text">
+                Each topic compares culturally distinct proverbs that overlap in meaning while differing in expression.
+              </p>
+            </article>
+
+            <article class="info-card">
+              <h3 class="info-title">Method</h3>
+              <p class="info-text">
+                Users compare sayings, interpret them, and add responses that reflect personal or cultural perspective.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="2">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">Reading Framework</div>
+              <h2 class="section-title">Questions for comparison</h2>
+              <p class="section-text">
+                These prompts support reading beyond literal translation.
+              </p>
+            </div>
+          </div>
+
+          <div class="question-grid">
+            <article class="question-card">Which image makes the meaning feel strongest?</article>
+            <article class="question-card">What changes when the same idea moves between cultures?</article>
+            <article class="question-card">Which proverb feels more direct, and which feels more poetic?</article>
+            <article class="question-card">How does tone affect interpretation?</article>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="3">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">Comparative Archive</div>
+              <h2 class="section-title">Proverbs</h2>
+              <p class="section-text">
+                Each proverb belongs to the current topic and can be discussed individually.
+              </p>
+            </div>
+            <div class="count-chip" id="sayingCount">0 sayings</div>
+          </div>
+
+          <div class="proverb-grid" id="sayingList"></div>
+        </section>
+
+        <section class="screen" data-screen="4">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">Participation</div>
+              <h2 class="section-title">Add to the archive</h2>
+              <p class="section-text">
+                Contribute a proverb from your culture or add an interpretation of the current theme.
+              </p>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <section class="panel">
+              <h3 class="panel-title">Add a proverb</h3>
+
+              <div class="field">
+                <label for="cultureInput">Culture or language</label>
+                <input id="cultureInput" type="text" placeholder="Example: Korean, Arabic, Hindi">
+              </div>
+
+              <div class="field">
+                <label for="proverbInput">Proverb or saying</label>
+                <input id="proverbInput" type="text" placeholder="Write a proverb from your culture">
+              </div>
+
+              <div class="field">
+                <label for="proverbMeaningInput">Meaning and connection</label>
+                <textarea id="proverbMeaningInput" placeholder="Explain the meaning and its relation to the topic."></textarea>
+              </div>
+
+              <div class="button-row">
+                <button id="addSayingBtn" class="btn btn-dark" type="button">Add Proverb</button>
+                <span id="sayingStatus" class="status"></span>
+              </div>
+            </section>
+
+            <section class="panel">
+              <h3 class="panel-title">Share a theme response</h3>
+
+              <div class="field">
+                <label for="cultureTagInput">Culture or perspective</label>
+                <input id="cultureTagInput" type="text" placeholder="Example: Korean, Spanish, personal perspective">
+              </div>
+
+              <div class="field">
+                <label for="interpretationInput">Interpretation</label>
+                <textarea id="interpretationInput" placeholder="What does the current topic mean to you?"></textarea>
+              </div>
+
+              <div class="button-row">
+                <button id="postBtn" class="btn btn-outline" type="button">Post Response</button>
+                <span id="postStatus" class="status"></span>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="5">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">Community Responses</div>
+              <h2 class="section-title">Theme responses</h2>
+              <p class="section-text">
+                Responses in this section address the overall topic rather than one specific proverb.
+              </p>
+            </div>
+          </div>
+
+          <div id="feed" class="response-feed"></div>
+        </section>
+
+        <section class="screen" data-screen="6">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">Discussion Threads</div>
+              <h2 class="section-title">Proverb responses</h2>
+              <p class="section-text">
+                Each proverb has its own response thread for focused interpretation.
+              </p>
+            </div>
+          </div>
+
+          <div id="threadList" class="thread-list"></div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div id="progressText" class="progress-text">1 / 7</div>
+        <div class="footer-actions">
+          <button id="prevScreenBtn" class="btn btn-outline" type="button">Back</button>
+          <button id="nextScreenBtn" class="btn btn-dark" type="button">Next</button>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const TOPICS = [
+      {
+        title: "Appearances can be misleading.",
+        description: "These proverbs warn against judging people or things by surface appearance alone.",
+        sayings: [
+          { id:"en-cover", lang:"English", text:"Don’t judge a book by its cover.", meaning:"Don’t judge something based on appearance alone." },
+          { id:"es-gold", lang:"Spanish", text:"No todo lo que brilla es oro.", meaning:"Not everything that shines is valuable." },
+          { id:"es-monk", lang:"Spanish", text:"El hábito no hace al monje.", meaning:"Clothes do not define character." },
+          { id:"fr-moine", lang:"French", text:"L’habit ne fait pas le moine.", meaning:"Appearances can be misleading." },
+          { id:"de-schein", lang:"German", text:"Der Schein trügt.", meaning:"Appearances deceive." },
+          { id:"ru-gold", lang:"Russian", text:"Не всё то золото, что блестит.", meaning:"Not everything that shines is gold." }
+        ]
+      },
+      {
+        title: "Actions matter more than words.",
+        description: "These sayings compare speech, action, and proof, often valuing what people do over what they say.",
+        sayings: [
+          { id:"en-actions", lang:"English", text:"Actions speak louder than words.", meaning:"What you do matters more than what you say." },
+          { id:"ko-wordsdebt", lang:"Korean", text:"말 한마디에 천 냥 빚도 갚는다.", meaning:"Words can solve big problems." },
+          { id:"ko-kindwords", lang:"Korean", text:"가는 말이 고와야 오는 말이 곱다.", meaning:"Kind words bring kind responses." },
+          { id:"de-brei", lang:"German", text:"Viele Köche verderben den Brei.", meaning:"Too many people ruin a task." },
+          { id:"fr-cook", lang:"French", text:"Trop de cuisiniers gâtent la sauce.", meaning:"Too many people ruin a task." },
+          { id:"ru-word", lang:"Russian", text:"Слово — не воробей, вылетит — не поймаешь.", meaning:"Once spoken, words cannot be taken back." }
+        ]
+      },
+      {
+        title: "Other situations can seem better than your own.",
+        description: "These sayings reflect comparison, envy, limited perspective, and the illusion that another place or life is better.",
+        sayings: [
+          { id:"en-grass", lang:"English", text:"The grass is always greener on the other side.", meaning:"Other situations seem better than your own." },
+          { id:"ko-ricecake", lang:"Korean", text:"남의 떡이 더 커 보인다.", meaning:"Someone else’s thing looks better." },
+          { id:"ko-frog", lang:"Korean", text:"우물 안 개구리.", meaning:"Someone with a narrow perspective." },
+          { id:"jp-nail", lang:"Japanese", text:"出る杭は打たれる", meaning:"Those who stand out get criticized." },
+          { id:"jp-dango", lang:"Japanese", text:"花より団子", meaning:"Practicality over appearance." },
+          { id:"ru-friend", lang:"Russian", text:"Старый друг лучше новых двух.", meaning:"Old friends are more valuable than new ones." }
+        ]
+      },
+      {
+        title: "Seeing can be more powerful than hearing.",
+        description: "These proverbs value direct experience, images, and observation over repeated explanation.",
+        sayings: [
+          { id:"en-picture", lang:"English", text:"A picture is worth a thousand words.", meaning:"Images can communicate complex ideas better than words." },
+          { id:"ko-seeonce", lang:"Korean", text:"백문이 불여일견.", meaning:"Seeing once is better than hearing many times." },
+          { id:"es-eyes", lang:"Spanish", text:"Ojos que no ven, corazón que no siente.", meaning:"What you don’t see doesn’t hurt you." },
+          { id:"fr-timewilltell", lang:"French", text:"Qui vivra verra.", meaning:"Time will tell." },
+          { id:"jp-ignorance", lang:"Japanese", text:"知らぬが仏", meaning:"Ignorance can be bliss." },
+          { id:"ru-fire", lang:"Russian", text:"Нет дыма без огня.", meaning:"There is no smoke without fire." }
+        ]
+      },
+      {
+        title: "Better late than never.",
+        description: "These sayings accept delay and imperfection, as long as something meaningful still happens in the end.",
+        sayings: [
+          { id:"en-late", lang:"English", text:"Better late than never.", meaning:"Doing something late is better than not doing it at all." },
+          { id:"es-late", lang:"Spanish", text:"Más vale tarde que nunca.", meaning:"Better late than never." },
+          { id:"fr-late", lang:"French", text:"Mieux vaut tard que jamais.", meaning:"Better late than never." },
+          { id:"ko-late", lang:"Korean", text:"안 하는 것보다는 늦게라도 하는 게 낫다.", meaning:"Late is better than never." },
+          { id:"fr-endgood", lang:"French", text:"Après la pluie, le beau temps.", meaning:"Good times follow bad times." },
+          { id:"de-endgood", lang:"German", text:"Ende gut, alles gut.", meaning:"All’s well that ends well." }
+        ]
+      },
+      {
+        title: "You cannot choose everything at once.",
+        description: "These proverbs talk about conflict between options, trade-offs, and the limits of trying to keep all possibilities open.",
+        sayings: [
+          { id:"en-bothways", lang:"English", text:"You can’t have it both ways.", meaning:"You can’t choose two conflicting options." },
+          { id:"ko-rabbits", lang:"Korean", text:"두 마리 토끼를 다 잡을 수는 없다.", meaning:"You cannot catch two rabbits at once." },
+          { id:"fr-cooks", lang:"French", text:"Trop de cuisiniers gâtent la sauce.", meaning:"Too many people ruin a task." },
+          { id:"de-cooks", lang:"German", text:"Viele Köche verderben den Brei.", meaning:"Too many cooks spoil the broth." },
+          { id:"jp-standout", lang:"Japanese", text:"出る杭は打たれる", meaning:"Those who stand out get criticized." },
+          { id:"es-hunger", lang:"Spanish", text:"A buen hambre no hay mal pan.", meaning:"When you are hungry, everything tastes good." }
+        ]
+      },
+      {
+        title: "Practice and repetition lead to improvement.",
+        description: "These sayings link effort, repetition, and steady work with skill and achievement.",
+        sayings: [
+          { id:"en-practice", lang:"English", text:"Practice makes perfect.", meaning:"Repetition leads to improvement." },
+          { id:"de-practice", lang:"German", text:"Übung macht den Meister.", meaning:"Practice makes perfect." },
+          { id:"ko-start", lang:"Korean", text:"시작이 반이다.", meaning:"Starting is half the work." },
+          { id:"jp-three-years", lang:"Japanese", text:"石の上にも三年", meaning:"Perseverance leads to success." },
+          { id:"de-rust", lang:"German", text:"Wer rastet, der rostet.", meaning:"If you stop, you deteriorate." },
+          { id:"fr-birdnest", lang:"French", text:"Petit à petit, l’oiseau fait son nid.", meaning:"Step by step, progress is made." }
+        ]
+      },
+      {
+        title: "Effort is required for reward.",
+        description: "These sayings connect struggle, labor, and persistence with achievement.",
+        sayings: [
+          { id:"en-pain", lang:"English", text:"No pain, no gain.", meaning:"Effort is required to achieve success." },
+          { id:"ru-fish", lang:"Russian", text:"Без труда не вытащишь и рыбку из пруда.", meaning:"No effort, no reward." },
+          { id:"de-effort", lang:"German", text:"Ohne Fleiß kein Preis.", meaning:"No effort, no reward." },
+          { id:"ko-hardshipreward", lang:"Korean", text:"고생 끝에 낙이 온다.", meaning:"Hardship leads to reward." },
+          { id:"jp-fallrise", lang:"Japanese", text:"七転び八起き", meaning:"Fall seven times, stand up eight." },
+          { id:"es-current", lang:"Spanish", text:"Camarón que se duerme se lo lleva la corriente.", meaning:"If you fall behind, you lose opportunities." }
+        ]
+      },
+      {
+        title: "Slow and careful can be wiser than rushing.",
+        description: "These proverbs suggest that speed often creates mistakes, while patience leads to better outcomes.",
+        sayings: [
+          { id:"jp-around", lang:"Japanese", text:"急がば回れ", meaning:"Slow down to move faster." },
+          { id:"ko-slow", lang:"Korean", text:"급할수록 돌아가라", meaning:"The more urgent it feels, the more carefully you should proceed." },
+          { id:"ko-bridge", lang:"Korean", text:"돌다리도 두들겨 보고 건너라", meaning:"Even if something seems safe, be cautious before acting." },
+          { id:"ru-rush", lang:"Russian", text:"Поспешишь — людей насмешишь.", meaning:"Rushing leads to mistakes." },
+          { id:"ru-slow", lang:"Russian", text:"Тише едешь — дальше будешь.", meaning:"Slow and steady wins." },
+          { id:"ru-trust", lang:"Russian", text:"Доверяй, но проверяй.", meaning:"Trust, but verify." }
+        ]
+      },
+      {
+        title: "Time reveals meaning over distance.",
+        description: "These proverbs suggest that truth or understanding often emerges only with time.",
+        sayings: [
+          { id:"fr-time", lang:"French", text:"Qui vivra verra.", meaning:"Time will tell." },
+          { id:"ko-time", lang:"Korean", text:"두고 보면 안다.", meaning:"You will understand with time." },
+          { id:"ru-time", lang:"Russian", text:"Время покажет.", meaning:"Time will show." },
+          { id:"en-time", lang:"English", text:"Time will tell.", meaning:"Meaning or truth becomes clear later." }
+        ]
+      },
+      {
+        title: "Language shapes perception.",
+        description: "These sayings reflect how the form of expression can shape what becomes imaginable or real.",
+        sayings: [
+          { id:"ko-seed", lang:"Korean", text:"말이 씨가 된다.", meaning:"Words can become reality." },
+          { id:"jp-kotodama", lang:"Japanese", text:"言霊", meaning:"Words carry spirit and power." },
+          { id:"en-power", lang:"English", text:"Words have power.", meaning:"Language influences outcomes." },
+          { id:"ko-debt", lang:"Korean", text:"말 한마디에 천 냥 빚도 갚는다.", meaning:"A single word can solve something much larger." }
+        ]
+      },
+      {
+        title: "Knowledge is always partial.",
+        description: "These proverbs highlight the limits of perspective and the incompleteness of understanding.",
+        sayings: [
+          { id:"ko-frog-2", lang:"Korean", text:"우물 안 개구리.", meaning:"A frog in a well has a limited view." },
+          { id:"jp-bliss-2", lang:"Japanese", text:"知らぬが仏", meaning:"Ignorance can be bliss." },
+          { id:"en-unknown", lang:"English", text:"You don’t know what you don’t know.", meaning:"There are limits to awareness." },
+          { id:"fr-seen", lang:"French", text:"On ne voit que ce qu’on sait.", meaning:"We only see what we know." }
+        ]
+      },
+      {
+        title: "Translation creates difference, not sameness.",
+        description: "These examples reveal that similar meanings shift in tone and image across languages.",
+        sayings: [
+          { id:"multi-late-1", lang:"English", text:"Better late than never.", meaning:"A delayed action is still better than no action." },
+          { id:"multi-late-2", lang:"Spanish", text:"Más vale tarde que nunca.", meaning:"The same idea moves with a different rhythm in Spanish." },
+          { id:"multi-late-3", lang:"French", text:"Mieux vaut tard que jamais.", meaning:"The same message appears with another cultural tone." },
+          { id:"multi-late-4", lang:"Korean", text:"안 하는 것보다는 늦게라도 하는 게 낫다.", meaning:"The meaning remains similar, but the phrasing becomes more direct and explanatory." }
+        ]
+      },
+      {
+        title: "Control and unpredictability.",
+        description: "These proverbs deal with uncertainty and the limits of control.",
+        sayings: [
+          { id:"ru-control", lang:"Russian", text:"Доверяй, но проверяй.", meaning:"Trust, but verify." },
+          { id:"en-unexpected", lang:"English", text:"Expect the unexpected.", meaning:"Uncertainty is inevitable." },
+          { id:"ko-manproposes", lang:"Korean", text:"사람 일은 모른다.", meaning:"Things do not always unfold as expected." },
+          { id:"fr-fire", lang:"French", text:"Il n’y a pas de fumée sans feu.", meaning:"Unexpected events often have hidden causes." }
+        ]
+      }
+    ];
+
+    const THEME_POSTS_KEY = "bm_full_theme_posts_v2";
+    const SAYING_POSTS_KEY = "bm_full_saying_posts_v2";
+    const SAYINGS_KEY = "bm_full_extra_sayings_v2";
+
+    const SEEDED_THREAD_REPLIES = {
+      0: {
+        "en-cover": [
+          {
+            user:"Mina",
+            culture:"Korean",
+            text:"This proverb feels direct, but the warning becomes more nuanced when compared with culturally specific versions.",
+            time: Date.now() - 1000 * 60 * 60 * 8
+          }
+        ],
+        "fr-moine": [
+          {
+            user:"Claire",
+            culture:"French",
+            text:"The monk image changes the tone. It feels less generic and more historically specific.",
+            time: Date.now() - 1000 * 60 * 60 * 6
+          }
+        ]
+      },
+      6: {
+        "en-practice": [
+          {
+            user:"Emil",
+            culture:"German",
+            text:"The English and German versions are very close, but the tone of mastery feels stronger in German.",
+            time: Date.now() - 1000 * 60 * 60 * 5
+          }
+        ]
+      },
+      8: {
+        "ko-slow": [
+          {
+            user:"Jisoo",
+            culture:"Korean",
+            text:"This Korean version feels more moral and instructive than the Japanese one. It sounds like advice from an older person.",
+            time: Date.now() - 1000 * 60 * 60 * 7
+          }
+        ]
+      },
+      10: {
+        "ko-seed": [
+          {
+            user:"Daniel",
+            culture:"English",
+            text:"I like how this proverb treats words almost like material things that keep growing after they are spoken.",
+            time: Date.now() - 1000 * 60 * 60 * 9
+          }
+        ]
+      }
+    };
+
+    let currentTopic = 0;
+    let currentScreen = 0;
+
+    const screens = Array.from(document.querySelectorAll(".screen"));
+    const navLinks = Array.from(document.querySelectorAll(".nav-link"));
+
+    const topicSelect = document.getElementById("topicSelect");
+    const nextTopicBtn = document.getElementById("nextTopicBtn");
+    const prevScreenBtn = document.getElementById("prevScreenBtn");
+    const nextScreenBtn = document.getElementById("nextScreenBtn");
+    const progressText = document.getElementById("progressText");
+
+    const themeTitle = document.getElementById("themeTitle");
+    const themeSub = document.getElementById("themeSub");
+    const sayingList = document.getElementById("sayingList");
+    const sayingCount = document.getElementById("sayingCount");
+
+    const cultureInput = document.getElementById("cultureInput");
+    const proverbInput = document.getElementById("proverbInput");
+    const proverbMeaningInput = document.getElementById("proverbMeaningInput");
+    const addSayingBtn = document.getElementById("addSayingBtn");
+    const sayingStatus = document.getElementById("sayingStatus");
+
+    const cultureTagInput = document.getElementById("cultureTagInput");
+    const interpretationInput = document.getElementById("interpretationInput");
+    const postBtn = document.getElementById("postBtn");
+    const postStatus = document.getElementById("postStatus");
+
+    const feed = document.getElementById("feed");
+    const threadList = document.getElementById("threadList");
+
+    function getStore(key){
+      try{
+        return JSON.parse(localStorage.getItem(key) || "{}");
+      }catch{
+        return {};
+      }
+    }
+
+    function setStore(key, value){
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function escapeHTML(str){
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function getThemePosts(){
+      const store = getStore(THEME_POSTS_KEY);
+      return store[currentTopic] || [];
+    }
+
+    function saveThemePosts(posts){
+      const store = getStore(THEME_POSTS_KEY);
+      store[currentTopic] = posts;
+      setStore(THEME_POSTS_KEY, store);
+    }
+
+    function saveThemePost(text, culture){
+      const posts = getThemePosts();
+      posts.unshift({
+        id: Date.now() + Math.random().toString(16).slice(2),
+        user: "You",
+        culture: culture || "Unspecified",
+        text,
+        time: Date.now()
+      });
+      saveThemePosts(posts);
+    }
+
+    function getExtraSayings(){
+      const store = getStore(SAYINGS_KEY);
+      return store[currentTopic] || [];
+    }
+
+    function saveExtraSaying(culture, proverb, meaning){
+      const store = getStore(SAYINGS_KEY);
+      const arr = store[currentTopic] || [];
+      arr.unshift({
+        id: "extra-" + Date.now(),
+        lang: culture,
+        text: proverb,
+        meaning
+      });
+      store[currentTopic] = arr;
+      setStore(SAYINGS_KEY, store);
+    }
+
+    function getAllSayings(){
+      return TOPICS[currentTopic].sayings.concat(getExtraSayings());
+    }
+
+    function getSayingPosts(){
+      const store = getStore(SAYING_POSTS_KEY);
+      const saved = store[currentTopic] || {};
+      const seeded = SEEDED_THREAD_REPLIES[currentTopic] || {};
+      const merged = {};
+
+      Object.keys(seeded).forEach(key => {
+        merged[key] = seeded[key].slice();
+      });
+
+      Object.keys(saved).forEach(key => {
+        merged[key] = saved[key];
+      });
+
+      return merged;
+    }
+
+    function saveSayingPosts(data){
+      const store = getStore(SAYING_POSTS_KEY);
+      store[currentTopic] = data;
+      setStore(SAYING_POSTS_KEY, store);
+    }
+
+    function addSayingReply(sayingId, user, text, culture){
+      const data = getSayingPosts();
+      const list = data[sayingId] || [];
+
+      list.unshift({
+        id: Date.now() + Math.random().toString(16).slice(2),
+        user: user || "Anonymous",
+        culture: culture || "Unspecified",
+        text,
+        time: Date.now()
+      });
+
+      data[sayingId] = list;
+      saveSayingPosts(data);
+    }
+
+    function buildTopicOptions(){
+      topicSelect.innerHTML = "";
+      TOPICS.forEach((topic, index) => {
+        const option = document.createElement("option");
+        option.value = index;
+        option.textContent = topic.title;
+        topicSelect.appendChild(option);
+      });
+      topicSelect.value = String(currentTopic);
+    }
+
+    function showScreen(index){
+      currentScreen = Math.max(0, Math.min(index, screens.length - 1));
+
+      screens.forEach((screen, i) => {
+        screen.classList.toggle("active", i === currentScreen);
+      });
+
+      navLinks.forEach(link => {
+        link.classList.toggle("active", Number(link.dataset.screenTarget) === currentScreen);
+      });
+
+      progressText.textContent = `${currentScreen + 1} / ${screens.length}`;
+      prevScreenBtn.disabled = currentScreen === 0;
+    }
+
+    function renderTheme(){
+      topicSelect.value = String(currentTopic);
+      themeTitle.textContent = TOPICS[currentTopic].title;
+      themeSub.textContent = TOPICS[currentTopic].description;
+    }
+
+    function renderSayings(){
+      const sayings = getAllSayings();
+      sayingList.innerHTML = "";
+      sayingCount.textContent = `${sayings.length} sayings`;
+
+      sayings.forEach(item => {
+        const card = document.createElement("article");
+        card.className = "proverb-card";
+        card.innerHTML = `
+          <div class="lang-chip">${escapeHTML(item.lang)}</div>
+          <div class="proverb-text">“${escapeHTML(item.text)}”</div>
+          <div class="proverb-meaning">${escapeHTML(item.meaning)}</div>
+          <div class="proverb-actions">
+            <button class="btn btn-outline open-thread-btn" data-id="${item.id}" type="button">Discuss →</button>
+          </div>
+        `;
+        sayingList.appendChild(card);
+      });
+
+      document.querySelectorAll(".open-thread-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.id;
+          showScreen(6);
+          setTimeout(() => {
+            const target = document.getElementById(`thread-${id}`);
+            if(target){
+              target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+          }, 20);
+        });
+      });
+    }
+
+    function renderThemePosts(){
+      const posts = getThemePosts();
+      feed.innerHTML = "";
+
+      if(posts.length === 0){
+        feed.innerHTML = `<div class="empty-state">No responses yet. Add the first interpretation for this topic.</div>`;
+        return;
+      }
+
+      posts.forEach(post => {
+        const card = document.createElement("article");
+        card.className = "response-card";
+        card.innerHTML = `
+          <div class="response-top">
+            <div class="response-meta">
+              <div class="response-user">${escapeHTML(post.user)}</div>
+              <div class="culture-badge">${escapeHTML(post.culture)}</div>
+            </div>
+            <div class="response-time">${new Date(post.time).toLocaleString()}</div>
+          </div>
+          <div class="response-body">${escapeHTML(post.text)}</div>
+        `;
+        feed.appendChild(card);
+      });
+    }
+
+    function renderThreads(){
+      const sayings = getAllSayings();
+      const threadData = getSayingPosts();
+      threadList.innerHTML = "";
+
+      if(sayings.length === 0){
+        threadList.innerHTML = `<div class="empty-state">No proverb threads available yet.</div>`;
+        return;
+      }
+
+      sayings.forEach(item => {
+        const replies = threadData[item.id] || [];
+
+        const replyHTML = replies.length === 0
+          ? `<div class="empty-state">No replies yet. Be the first to add one.</div>`
+          : `
+            <div class="reply-list">
+              ${replies.map(reply => `
+                <article class="reply-card">
+                  <div class="reply-top">
+                    <div class="reply-meta">
+                      <div class="reply-user">${escapeHTML(reply.user)}</div>
+                      <div class="culture-badge">${escapeHTML(reply.culture)}</div>
+                    </div>
+                    <div class="reply-time">${new Date(reply.time).toLocaleString()}</div>
+                  </div>
+                  <div class="reply-body">${escapeHTML(reply.text)}</div>
+                </article>
+              `).join("")}
+            </div>
+          `;
+
+        const thread = document.createElement("section");
+        thread.className = "thread-card";
+        thread.id = `thread-${item.id}`;
+
+        thread.innerHTML = `
+          <div class="thread-top">
+            <div>
+              <div class="lang-chip">${escapeHTML(item.lang)}</div>
+              <h3 class="thread-title">${escapeHTML(item.text)}</h3>
+              <p class="thread-sub">${escapeHTML(item.meaning)}</p>
+            </div>
+            <div class="count-chip">${replies.length} ${replies.length === 1 ? "reply" : "replies"}</div>
+          </div>
+
+          ${replyHTML}
+
+          <div class="field">
+            <label for="name-${item.id}">Your name or ID</label>
+            <input id="name-${item.id}" type="text" placeholder="Example: Mina, User21, Anna">
+          </div>
+
+          <div class="field">
+            <label for="culture-${item.id}">Your culture or perspective</label>
+            <input id="culture-${item.id}" type="text" placeholder="Example: Korean, Spanish, personal perspective">
+          </div>
+
+          <div class="field">
+            <label for="reply-${item.id}">Response</label>
+            <textarea id="reply-${item.id}" placeholder="Write your interpretation of this proverb."></textarea>
+          </div>
+
+          <div class="button-row">
+            <button class="btn btn-dark submit-reply-btn" data-id="${item.id}" type="button">Post Reply</button>
+          </div>
+        `;
+
+        threadList.appendChild(thread);
+      });
+
+      document.querySelectorAll(".submit-reply-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.id;
+          const user = document.getElementById(`name-${id}`)?.value.trim() || "";
+          const culture = document.getElementById(`culture-${id}`)?.value.trim() || "";
+          const text = document.getElementById(`reply-${id}`)?.value.trim() || "";
+
+          if(!text) return;
+
+          addSayingReply(id, user, text, culture);
+          renderThreads();
+
+          setTimeout(() => {
+            const target = document.getElementById(`thread-${id}`);
+            if(target){
+              target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+          }, 20);
+        });
+      });
+    }
+
+    function renderAll(){
+      renderTheme();
+      renderSayings();
+      renderThemePosts();
+      renderThreads();
+    }
+
+    nextTopicBtn.addEventListener("click", () => {
+      currentTopic = (currentTopic + 1) % TOPICS.length;
+      renderAll();
+      showScreen(1);
+    });
+
+    topicSelect.addEventListener("change", () => {
+      currentTopic = Number(topicSelect.value);
+      renderAll();
+      showScreen(1);
+    });
+
+    addSayingBtn.addEventListener("click", () => {
+      const culture = cultureInput.value.trim();
+      const proverb = proverbInput.value.trim();
+      const meaning = proverbMeaningInput.value.trim();
+
+      if(!culture || !proverb || !meaning) return;
+
+      saveExtraSaying(culture, proverb, meaning);
+      cultureInput.value = "";
+      proverbInput.value = "";
+      proverbMeaningInput.value = "";
+      sayingStatus.textContent = "Added.";
+      renderSayings();
+      renderThreads();
+
+      setTimeout(() => {
+        sayingStatus.textContent = "";
+      }, 1200);
+    });
+
+    postBtn.addEventListener("click", () => {
+      const culture = cultureTagInput.value.trim();
+      const text = interpretationInput.value.trim();
+
+      if(!text) return;
+
+      saveThemePost(text, culture);
+      cultureTagInput.value = "";
+      interpretationInput.value = "";
+      postStatus.textContent = "Posted.";
+      renderThemePosts();
+
+      setTimeout(() => {
+        postStatus.textContent = "";
+      }, 1200);
+    });
+
+    prevScreenBtn.addEventListener("click", () => {
+      showScreen(currentScreen - 1);
+    });
+
+    nextScreenBtn.addEventListener("click", () => {
+      if(currentScreen === screens.length - 1){
+        showScreen(0);
+      }else{
+        showScreen(currentScreen + 1);
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        showScreen(Number(link.dataset.screenTarget));
+      });
+    });
+
+    buildTopicOptions();
+    renderAll();
+    showScreen(0);
+  </script>
+</body>
+</html>

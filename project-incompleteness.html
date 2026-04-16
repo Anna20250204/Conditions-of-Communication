@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Between Meanings — Conditions of Information</title>
+  <link rel="stylesheet" href="Styles.css">
+</head>
+<body class="project-page">
+  <header class="site-header site-header-light">
+    <div class="site-header-inner">
+      <div class="site-title">Conditions of Communication</div>
+      <nav class="site-nav">
+        <a href="conditions_of_Information_1.html">Home</a>
+        <a href="project-error.html">Error</a>
+        <a href="project-incompleteness.html">Between Meanings</a>
+        <a href="about-me.html">About Me</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="project-main">
+    <section class="project-intro">
+      <div class="project-intro-left">
+        <p class="project-kicker" data-key="kicker">Project 2</p>
+        <h1 class="project-title" data-key="title">Between Meanings</h1>
+        <p class="project-subtitle" data-key="subtitle">Linguistic incompleteness across cultures</p>
+      </div>
+    </section>
+
+    <section class="project-hero-click-section">
+      <a href="https://annakim.ocaduwebspace.ca/GD4_website/between%20meanings_1.html" target="_blank" class="hero-link-block">
+        <div class="project-hero-media hero-media-large no-border">
+          <div class="main-media clickable-hero">
+            <img src="incompleteness_1.jpg" alt="Between Meanings main image">
+          </div>
+        </div>
+        <div class="hero-link-caption" data-key="enterSite">Click image to enter website ↗</div>
+      </a>
+    </section>
+
+    <section class="project-description-section">
+      <div class="project-description-shell">
+        <div class="project-description-grid">
+          <div class="project-description-left">
+            <p class="project-section-label" data-key="descTitle">Description</p>
+          </div>
+
+          <div class="project-description-right">
+            <p data-key="desc1">
+              This project explores incompleteness between languages through a website
+              centered on proverbs from different cultures. Rather than treating translation
+              as a complete transfer of meaning, the project highlights the differences
+              that appear in tone, phrasing, and cultural context.
+            </p>
+
+            <p data-key="desc2">
+              By comparing similar sayings across cultures, the work suggests that meaning
+              is never fully fixed. It is shaped by language, interpretation, and the
+              conditions through which it is encountered.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="project-carousel-section">
+      <div class="project-description-shell">
+        <div class="project-description-grid">
+          <div class="project-description-left">
+            <p class="project-section-label" data-key="walkthrough">Website Walkthrough</p>
+          </div>
+
+          <div class="project-description-right">
+            <p class="carousel-note" data-key="swipe">Swipe or use arrows</p>
+
+            <div class="usage-carousel-wrap single-carousel-wrap">
+              <button class="carousel-btn prev" type="button" id="usagePrev">←</button>
+
+              <div class="usage-carousel single-carousel" id="usageCarousel">
+                <div class="usage-track" id="usageTrack">
+                  <div class="usage-slide">
+                    <img src="incompleteness_1.jpg" alt="Between Meanings walkthrough 1">
+                  </div>
+                  <div class="usage-slide">
+                    <img src="incompleteness_2.jpg" alt="Between Meanings walkthrough 2">
+                  </div>
+                  <div class="usage-slide">
+                    <img src="incompleteness_3.jpg" alt="Between Meanings walkthrough 3">
+                  </div>
+                <div class="usage-slide">
+                    <img src="incompleteness_4.jpg" alt="Between Meanings walkthrough 4">
+                  </div>
+                  <div class="usage-slide">
+                    <img src="incompleteness_5.jpg" alt="Between Meanings walkthrough 5">
+                  </div>
+                  <div class="usage-slide">
+                    <img src="incompleteness_6.jpg" alt="Between Meanings walkthrough 6">
+                  </div>
+                </div>
+              </div>
+
+              <button class="carousel-btn next" type="button" id="usageNext">→</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="image-pile-area project-pile" id="incompletePileArea" aria-hidden="true"></div>
+
+  <script src="script.js"></script>
+  <script>
+    (function randomIntroLanguage(){
+      const translations = {
+        en: {
+          kicker: "Project 2",
+          title: "Between Meanings",
+          subtitle: "Linguistic incompleteness across cultures",
+          enterSite: "Click image to enter website ↗",
+          descTitle: "Description",
+          desc1: "This project explores incompleteness between languages through a website centered on proverbs from different cultures. Rather than treating translation as a complete transfer of meaning, the project highlights the differences that appear in tone, phrasing, and cultural context.",
+          desc2: "By comparing similar sayings across cultures, the work suggests that meaning is never fully fixed. It is shaped by language, interpretation, and the conditions through which it is encountered.",
+          walkthrough: "Website Walkthrough",
+          swipe: "Swipe or use arrows"
+        },
+        ko: {
+          kicker: "프로젝트 2",
+          title: "의미 사이에서",
+          subtitle: "문화권 사이의 언어적 불완전성",
+          enterSite: "이미지를 눌러 웹사이트로 이동 ↗",
+          descTitle: "설명",
+          desc1: "이 프로젝트는 다양한 문화권의 속담을 중심으로 언어 사이의 불완전성을 탐구한다. 번역을 완전한 의미 전달로 보기보다, 어조와 표현 방식, 문화적 맥락에서 발생하는 차이를 드러낸다.",
+          desc2: "비슷한 속담들을 비교하면서 의미는 결코 완전히 고정되지 않으며 언어와 해석, 그리고 그것이 놓이는 조건에 따라 달라진다는 점을 보여준다.",
+          walkthrough: "웹사이트 안내",
+          swipe: "스와이프하거나 화살표를 사용하세요"
+        },
+        es: {
+          kicker: "Proyecto 2",
+          title: "Entre significados",
+          subtitle: "La incompletitud lingüística entre culturas",
+          enterSite: "Haz clic en la imagen para entrar al sitio ↗",
+          descTitle: "Descripción",
+          desc1: "Este proyecto explora la incompletitud entre lenguas a través de un sitio web centrado en refranes de distintas culturas. En lugar de tratar la traducción como una transferencia completa del significado, el proyecto destaca las diferencias que aparecen en el tono, la formulación y el contexto cultural.",
+          desc2: "Al comparar refranes similares entre culturas, la obra sugiere que el significado nunca está completamente fijo. Está moldeado por la lengua, la interpretación y las condiciones en que aparece.",
+          walkthrough: "Recorrido del sitio",
+          swipe: "Desliza o usa las flechas"
+        },
+        fr: {
+          kicker: "Projet 2",
+          title: "Entre les sens",
+          subtitle: "L’incomplétude linguistique à travers les cultures",
+          enterSite: "Cliquez sur l’image pour entrer dans le site ↗",
+          descTitle: "Description",
+          desc1: "Ce projet explore l’incomplétude entre les langues à travers un site centré sur des proverbes de différentes cultures. Au lieu de considérer la traduction comme un transfert complet du sens, le projet met en évidence les différences de ton, de formulation et de contexte culturel.",
+          desc2: "En comparant des proverbes similaires d’une culture à l’autre, l’œuvre suggère que le sens n’est jamais complètement fixe. Il dépend de la langue, de l’interprétation et des conditions dans lesquelles il apparaît.",
+          walkthrough: "Parcours du site",
+          swipe: "Faites glisser ou utilisez les flèches"
+        },
+        ja: {
+          kicker: "プロジェクト2",
+          title: "意味のあいだ",
+          subtitle: "文化をまたぐ言語の不完全さ",
+          enterSite: "画像をクリックしてサイトへ ↗",
+          descTitle: "説明",
+          desc1: "このプロジェクトは、異なる文化のことわざを中心に、言語のあいだにある不完全さを探る。翻訳を完全な意味の移動としてではなく、トーン、言い回し、文化的文脈に現れる差異として捉えている。",
+          desc2: "似たことわざを比較することで、意味は決して完全に固定されず、言語、解釈、そしてそれが置かれる条件によって変化することを示している。",
+          walkthrough: "サイト案内",
+          swipe: "スワイプまたは矢印を使う"
+        }
+      };
+
+      const langs = Object.keys(translations);
+      const randomLang = langs[Math.floor(Math.random() * langs.length)];
+      const selected = translations[randomLang];
+
+      document.documentElement.lang = randomLang;
+
+      document.querySelectorAll("[data-key]").forEach((el) => {
+        const key = el.getAttribute("data-key");
+        if (selected[key]) el.textContent = selected[key];
+      });
+    })();
+  </script>
+</body>
+</html>
